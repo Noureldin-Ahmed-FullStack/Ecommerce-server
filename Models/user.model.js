@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 const schema = new mongoose.Schema({
     name:{
         type: String,
-        unique:[true, 'name is required'],
         trim:true,
         required:true,
         minLength:[2,'name is too short']
@@ -28,5 +27,13 @@ const schema = new mongoose.Schema({
         enum:['user','admin'],
         default:'user'
     },
+    wishlist:[{type: mongoose.Types.ObjectId, ref:'product'}],
+    addresses: [
+        {
+            street:String,
+            phone: String,
+            city: String,
+        }
+    ]
 })
 export const userModel =mongoose.model("user", schema)

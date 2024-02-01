@@ -31,7 +31,7 @@ export const GetSingleUser = catchError(async (req, res, next) => {
     next()
 })
 export const GetSingleUserRes = catchError(async (req, res, next) => {
-    const users = await userModel.findById(req.params.id)
+    const users = await userModel.findById(req.params.id).populate('wishlist')
     if (!users) {
         return res.json({ message: "user doesnt exist" })
     }
@@ -46,14 +46,20 @@ const Validate = catchError(async (req, res) => {
 const signIn = catchError(async (req, res) => {
     let user = await userModel.findOne({ email: req.body.email })
     console.log(user);
-    if (user.Validated) {
-        if (user && bcrypt.compareSync(req.body.password, user.password)) {
-            let token = jwt.sign({ uid: user._id, email: user.email }, 'key')
-            return res.json({ message: "hello " + user.name, token })
-        }
+    if (user && bcrypt.compareSync(req.body.password, user.password)) {
+        let token = jwt.sign({ uid: user._id, email: user.email }, 'key')
+        return res.json({ message: "hello " + user.name, token })
+    }
 
-        return res.json({ message: "Email or password is incorrect!" })
-    } else { return res.json({ message: "Email not validated" }) }
+    return res.json({ message: "Email or password is incorrect!" })
+    // if (user.Validated) {
+    //     if (user && bcrypt.compareSync(req.body.password, user.password)) {
+    //         let token = jwt.sign({ uid: user._id, email: user.email }, 'key')
+    //         return res.json({ message: "hello " + user.name, token })
+    //     }
+
+    //     return res.json({ message: "Email or password is incorrect!" })
+    // } else { return res.json({ message: "Email not validated" }) }
 
 })
 const verify = catchError((req, res) => {
@@ -79,7 +85,14 @@ const updateUserPic = catchError(async (req, res) => {
         });
     res.json(req.file);
 })
-
+const addtoWishlist = catchError(async (req, res) => {
+    let decoded = jwt.verify(req.headers.token, 'key');
+    let wishlist = await userModel.findByIdAndUpdate(decoded.uid, {$addToSet :{wishlist:req.body.product} },{new:true})
+    if (!wishlist) {
+        return res.json({message: "wishlist not found"})
+    }
+    res.json({message: "success"})
+})
 
 
 export {
@@ -88,5 +101,5 @@ export {
     getAllUsers,
     Validate,
     updateUserPic,
-
+    addtoWishlist
 }
