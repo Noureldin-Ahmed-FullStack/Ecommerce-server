@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer"
-export async function sendEmail(userID,userEmail) {
+export async function sendEmail(userName,userEmail,userPhone,userMessage, reciver) {
   if (!userEmail) {
-    userEmail='ahmedmaged.route@gmail.com'
+    userEmail='noureldin.20200396@gmail.com'
   }
     const transporter = nodemailer.createTransport({
         service:'gmail',
@@ -13,11 +13,11 @@ export async function sendEmail(userID,userEmail) {
       });
       
         const info = await transporter.sendMail({
-          from: '"noureldin 01116074676" <noureldin.20200396@gmail.com>', // sender address
-          to: userEmail, // list of receivers
-          subject: `"assignment 8 ¯\_(ツ)_/¯ 😋"`, // Subject line
-          html: `<b>click to validate this account</b>
-          <a href="http://localhost:3000/usersValidation/${userID}"></a>
+          from: `"${userName} ${userPhone}" <${userEmail}>`, // sender address
+          to: reciver, // list of receivers
+          subject: `"Portfolio Contact Me"`, // Subject line
+          html: `<b>click to validate this account</b> <br />
+          <p>${userMessage}</p>
           `, // html body
         });
       

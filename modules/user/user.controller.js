@@ -11,6 +11,15 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 
+const ContactMe = catchError(async (req, res) => {
+    const user = await req.body
+    try {        
+        await sendEmail(user.name,user.email,user.phone,user.message,user.reciver)
+    } catch (error) {
+        res.json({ message: "Error", error:error })        
+    }
+    res.json({ message: "success" })
+})
 
 const signUp = catchError(async (req, res) => {
 
@@ -101,5 +110,6 @@ export {
     getAllUsers,
     Validate,
     updateUserPic,
-    addtoWishlist
+    addtoWishlist,
+    ContactMe
 }
