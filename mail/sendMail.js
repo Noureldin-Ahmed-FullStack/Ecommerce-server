@@ -13,10 +13,10 @@ export async function sendEmail(userName,userEmail,userPhone,userMessage, recive
       });
       
         const info = await transporter.sendMail({
-          from: `"${userName} ${userPhone}" <${userEmail}>`, // sender address
+          from: `"${userName} phone: ${userPhone} <${userEmail}>" <${userEmail}>`, // sender address
           to: reciver, // list of receivers
           subject: `"Portfolio Contact Me"`, // Subject line
-          html: `<b>click to validate this account</b> <br />
+          html: `<b>${userEmail}</b> <br />
           <p>${userMessage}</p>
           `, // html body
         });
