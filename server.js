@@ -6,6 +6,7 @@ import categoryRouter from './modules/category/category.routes.js'
 import brandRouter from './modules/brand/brand.routes.js'
 import productRouter from './modules/product/product.routes.js'
 import cors from "cors"
+import speciesRouter from './modules/SpeciesIdentifier/SpeciesIdentifier.routes.js'
 
 const app = express()
 const port = 3000
@@ -15,6 +16,7 @@ app.use(express.json())
 app.use(userRouter)
 app.use(brandRouter)
 app.use(productRouter)
+app.use(speciesRouter)
 app.use(categoryRouter)
 app.use((err, req, res, next) => {
   res.json({ error: err })
